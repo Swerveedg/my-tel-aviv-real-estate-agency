@@ -25,7 +25,7 @@ export default function PropertyDetailPage() {
   const prevProperty = properties[(propertyIndex - 1 + properties.length) % properties.length];
   const nextProperty = properties[(propertyIndex + 1) % properties.length];
 
-  function handleNavigate(targetId, dir) {
+  function handleNavigate(targetId: number, dir: number) {
     setDirection(dir);
     setPageVisible(false);
     setTimeout(() => {
@@ -224,11 +224,11 @@ function ContactForm() {
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  function handleChange(e) {
+  function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
     setForm({ ...form, [e.target.name]: e.target.value });
   }
 
-  function handleSubmit(e) {
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setLoading(true);
     setTimeout(() => {
