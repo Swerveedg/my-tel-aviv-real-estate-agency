@@ -1,6 +1,7 @@
 'use client';
 import React from "react";
 import { motion } from "framer-motion";
+import VideoBackground from "./VideoBackground";
 
 export default function Hero() {
   // Smooth scroll handler
@@ -13,25 +14,21 @@ export default function Hero() {
   };
 
   return (
-    <section className="relative flex items-center justify-center min-h-screen px-4 overflow-hidden">
-      {/* Video Background */}
-      <video
-        className="absolute inset-0 w-full h-full object-cover z-0 hero-zoom"
-        src="/tel-aviv-towers.mp4"
-        autoPlay
-        loop
-        muted
-        playsInline
-      />
+    <VideoBackground 
+      src="/telaviv-skyview.mp4"
+      poster="/poster.svg"
+      className="flex items-center justify-center min-h-screen px-4"
+    >
       {/* Overlay for readability */}
-      <div className="absolute inset-0 z-10" style={{background: 'linear-gradient(180deg,#0A1B2A 0%,rgba(10,27,42,0) 60%)'}}></div>
+      <div className="absolute inset-0 z-10 bg-gradient-to-b from-black/40 via-black/20 to-black/40"></div>
+      
       {/* Content Center */}
       <div className="relative z-20 mx-auto text-center max-w-3xl font-[var(--font-inter)]">
         <motion.h1
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: [0.17, 0.67, 0.5, 1.35] }}
-          className="font-extrabold text-gray-100 text-[clamp(48px,6.5vw,120px)] leading-snug tracking-[-0.02em] drop-shadow-md"
+          className="font-extrabold text-gray-100 text-[clamp(48px,6.5vw,120px)] leading-snug tracking-[-0.02em] drop-shadow-md hero-zoom"
           style={{ mixBlendMode: 'overlay', textShadow: '0 2px 6px rgba(0,0,0,.25)' }}
         >
           Where the City Meets the Sea
@@ -62,6 +59,7 @@ export default function Hero() {
           </svg>
         </motion.button>
       </div>
+      
       <style jsx>{`
         .hero-zoom {
           animation: heroZoom 10s ease-in-out infinite alternate;
@@ -71,6 +69,6 @@ export default function Hero() {
           100% { transform: scale(1.05); }
         }
       `}</style>
-    </section>
+    </VideoBackground>
   );
 } 
