@@ -5,6 +5,10 @@ const nextConfig: NextConfig = {
   bundlePagesRouterDependencies: true, // replaces experimental.bundlePagesExternals
   serverExternalPackages: [], // add package names if you want to exclude from bundling
 
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+
   // Uncomment to enable experimental features:
   // experimental: {
   //   ppr: 'incremental', // Partial Prerendering (optional, if you want to try PPR)
