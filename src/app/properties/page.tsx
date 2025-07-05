@@ -345,7 +345,7 @@ export default function PropertiesPage() {
                       </div>
                       <div className="flex items-center gap-1">
                         <Square className="w-4 h-4" />
-                        <span>{property.size}</span>
+                        <span>{property.area}</span>
                       </div>
                     </div>
 
