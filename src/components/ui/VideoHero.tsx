@@ -31,7 +31,7 @@ export default function VideoHero() {
           poster="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80"
         >
           <source 
-            src="https://player.vimeo.com/external/434045526.sd.mp4?s=c27eecc69a27dbc4ff2b87d38afc35f1a9e7c02d&profile_id=164&oauth2_token_id=57447761" 
+            src="https://res.cloudinary.com/dfuocwiqv/video/upload/v1751734031/d0vph6zvgjtivero8bxv.mp4" 
             type="video/mp4" 
           />
         </video>

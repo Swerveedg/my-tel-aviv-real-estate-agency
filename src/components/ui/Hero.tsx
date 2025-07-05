@@ -15,7 +15,7 @@ export default function Hero() {
 
   return (
     <VideoBackground 
-      src="/telaviv-skyview.mp4"
+      src="https://res.cloudinary.com/dfuocwiqv/video/upload/v1751734031/d0vph6zvgjtivero8bxv.mp4"
       poster="/poster.svg"
       className="flex items-center justify-center min-h-screen px-4"
     >

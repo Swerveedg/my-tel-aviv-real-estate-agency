@@ -7,6 +7,8 @@ import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
 import { AnimatePresence } from "framer-motion";
 
+import VideoManager from '../../../components/ui/VideoManager'
+
 export default function PropertyDetailPage() {
   const { propertyId } = useParams();
   const router = useRouter();
@@ -182,6 +184,28 @@ export default function PropertyDetailPage() {
                   Interested? Contact Us
                 </h2>
                 <ContactForm />
+              </div>
+
+              {/* Video Management Section */}
+              <div className="mb-12">
+                <h2 className="text-2xl font-semibold text-deep-blue mb-3 flex items-center gap-2">
+                  <svg className="w-6 h-6 text-gold" fill="currentColor" viewBox="0 0 20 20"><path d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm0 2h12v8H4V5z"/></svg>
+                  Video Management
+                </h2>
+                <div className="space-y-6">
+                  <VideoManager 
+                    onVideoChange={(video) => {
+                      console.log('Selected video:', video);
+                      alert(`Video changed to: ${video.name}\nURL: ${video.url}`);
+                    }}
+                    currentVideo={{
+                      id: 'cloudinary-upload',
+                      name: 'Uploaded Video',
+                      url: 'https://res.cloudinary.com/dfuocwiqv/video/upload/v1751734031/d0vph6zvgjtivero8bxv.mp4',
+                      description: 'Your uploaded video from Cloudinary'
+                    }}
+                  />
+                </div>
               </div>
 
               <div className="flex justify-between text-base text-warm-gray mb-8">
