@@ -29,7 +29,7 @@ const cardVariants = {
 // Premium SVG Wave Divider
 const WaveDivider = () => (
   <svg
-    className="w-full h-24 text-white"
+    className="w-full h-12 sm:h-24 text-white"
     viewBox="0 0 1200 120"
     preserveAspectRatio="none"
   >
@@ -73,7 +73,7 @@ export default function AvailableProperties() {
       <section
         ref={ref}
         id="properties-section"
-        className="relative py-32 px-6 bg-gradient-to-b from-gray-50 via-white to-gray-50 section-transition"
+        className="relative py-16 sm:py-32 px-4 sm:px-6 bg-gradient-to-b from-gray-50 via-white to-gray-50 section-transition"
       >
         <div className="max-w-7xl mx-auto">
           {/* Premium Header */}
@@ -81,13 +81,13 @@ export default function AvailableProperties() {
             initial={{ opacity: 0, y: 60 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 1 }}
-            className="text-center mb-24"
+            className="text-center mb-12 sm:mb-24"
           >
             <motion.p
               initial={{ opacity: 0, y: 30 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.8, delay: 0.2 }}
-              className="text-lg font-medium text-deep-blue mb-6 tracking-widest"
+              className="text-sm sm:text-lg font-medium text-deep-blue mb-4 sm:mb-6 tracking-widest"
             >
               DISCOVER YOUR DREAM HOME
             </motion.p>
@@ -95,7 +95,7 @@ export default function AvailableProperties() {
               initial={{ opacity: 0, y: 30 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.8, delay: 0.3 }}
-              className="section-title text-7xl md:text-8xl font-bold text-soft-black mb-12"
+              className="section-title text-4xl sm:text-7xl md:text-8xl font-bold text-soft-black mb-8 sm:mb-12"
             >
               Find Your Perfect Home
             </motion.h2>
@@ -103,7 +103,7 @@ export default function AvailableProperties() {
               initial={{ opacity: 0, y: 30 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.8, delay: 0.4 }}
-              className="elegant-text text-2xl text-warm-gray max-w-4xl mx-auto leading-relaxed"
+              className="elegant-text text-lg sm:text-2xl text-warm-gray max-w-4xl mx-auto leading-relaxed px-4"
             >
               Each property tells a unique story of luxury, comfort, and the
               vibrant spirit of Tel Aviv.
@@ -114,26 +114,27 @@ export default function AvailableProperties() {
             </motion.p>
           </motion.div>
 
-          {/* Premium Properties Masonry Grid */}
+          {/* Premium Properties Grid - Mobile Optimized */}
           <motion.div
             variants={containerVariants}
             initial="hidden"
             animate={isInView ? "visible" : "hidden"}
-            className="columns-1 sm:columns-2 lg:columns-3 gap-y-12 gap-x-8"
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8"
           >
             {properties.map((property, index) => (
               <motion.div
                 key={property.id}
                 variants={cardVariants}
                 custom={index}
-                className="group card-hover bg-white rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-700 overflow-hidden border border-white/50 relative inline-block w-full mb-8 cursor-pointer"
+                className="group card-hover bg-white rounded-2xl sm:rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-700 overflow-hidden border border-white/50 relative cursor-pointer touch-manipulation"
                 onMouseEnter={() => setSelectedProperty(property.id)}
                 onMouseLeave={() => setSelectedProperty(null)}
                 whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
                 onClick={() => handleImageClick(property.image)}
               >
                 {/* Premium Image Container */}
-                <div className="relative h-96 overflow-hidden">
+                <div className="relative h-64 sm:h-96 overflow-hidden">
                   <motion.img
                     src={property.image}
                     alt={property.title}
@@ -153,23 +154,23 @@ export default function AvailableProperties() {
 
                   {/* Premium Price Badge */}
                   <motion.div
-                    className="absolute top-6 right-6 glass px-6 py-3 rounded-full shadow-2xl"
+                    className="absolute top-4 sm:top-6 right-4 sm:right-6 glass px-4 sm:px-6 py-2 sm:py-3 rounded-full shadow-2xl"
                     whileHover={{ scale: 1.05 }}
                     transition={{ duration: 0.3 }}
                   >
-                    <span className="text-xl font-bold text-soft-black">
+                    <span className="text-sm sm:text-xl font-bold text-soft-black">
                       {property.price}
                     </span>
                   </motion.div>
 
                   {/* Premium Location Badge */}
                   <motion.div
-                    className="absolute top-6 left-6 glass px-4 py-2 rounded-full shadow-lg"
+                    className="absolute top-4 sm:top-6 left-4 sm:left-6 glass px-3 sm:px-4 py-1 sm:py-2 rounded-full shadow-lg"
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.5 + index * 0.1 }}
                   >
-                    <span className="text-sm font-medium text-soft-black">
+                    <span className="text-xs sm:text-sm font-medium text-soft-black">
                       {property.location}
                     </span>
                   </motion.div>
@@ -182,9 +183,9 @@ export default function AvailableProperties() {
                 </div>
 
                 {/* Premium Content */}
-                <div className="p-10">
+                <div className="p-6 sm:p-10">
                   <motion.h3
-                    className="text-2xl font-bold text-soft-black mb-3 group-hover:text-deep-blue transition-colors duration-500 leading-tight"
+                    className="text-xl sm:text-2xl font-bold text-soft-black mb-2 sm:mb-3 group-hover:text-deep-blue transition-colors duration-500 leading-tight"
                     whileHover={{ x: 5 }}
                     transition={{ duration: 0.3 }}
                   >
@@ -192,148 +193,81 @@ export default function AvailableProperties() {
                   </motion.h3>
 
                   <motion.p
-                    className="text-gold font-medium mb-6 italic"
+                    className="text-gold font-medium mb-4 sm:mb-6 italic text-sm sm:text-base"
                     whileHover={{ x: 5 }}
                     transition={{ duration: 0.3, delay: 0.1 }}
                   >
                     {property.subtitle}
                   </motion.p>
 
-                  {/* Premium Property Details */}
-                  <div className="flex justify-between text-sm text-warm-gray mb-8">
-                    <motion.span
-                      className="flex items-center font-medium"
-                      whileHover={{ scale: 1.05 }}
-                      transition={{ duration: 0.3 }}
-                    >
-                      <svg
-                        className="w-5 h-5 mr-2 text-deep-blue"
-                        fill="currentColor"
-                        viewBox="0 0 20 20"
-                      >
-                        <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                      </svg>
-                      {property.bedrooms} beds
-                    </motion.span>
-                    <motion.span
-                      className="flex items-center font-medium"
-                      whileHover={{ scale: 1.05 }}
-                      transition={{ duration: 0.3 }}
-                    >
-                      <svg
-                        className="w-5 h-5 mr-2 text-deep-blue"
-                        fill="currentColor"
-                        viewBox="0 0 20 20"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                      {property.bathrooms} baths
-                    </motion.span>
-                    <motion.span
-                      className="flex items-center font-medium"
-                      whileHover={{ scale: 1.05 }}
-                      transition={{ duration: 0.3 }}
-                    >
-                      <svg
-                        className="w-5 h-5 mr-2 text-deep-blue"
-                        fill="currentColor"
-                        viewBox="0 0 20 20"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                      {property.area}
-                    </motion.span>
+                  {/* Mobile-optimized property details */}
+                  <div className="grid grid-cols-3 gap-4 mb-4 sm:mb-6">
+                    <div className="text-center">
+                      <div className="flex items-center justify-center mb-1">
+                        <svg className="w-4 h-4 text-deep-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z" />
+                        </svg>
+                      </div>
+                      <span className="text-xs sm:text-sm font-medium text-soft-black">{property.bedrooms} Beds</span>
+                    </div>
+                    <div className="text-center">
+                      <div className="flex items-center justify-center mb-1">
+                        <svg className="w-4 h-4 text-deep-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                        </svg>
+                      </div>
+                      <span className="text-xs sm:text-sm font-medium text-soft-black">{property.bathrooms} Baths</span>
+                    </div>
+                    <div className="text-center">
+                      <div className="flex items-center justify-center mb-1">
+                        <svg className="w-4 h-4 text-deep-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
+                        </svg>
+                      </div>
+                      <span className="text-xs sm:text-sm font-medium text-soft-black">{property.size}</span>
+                    </div>
                   </div>
 
-                  {/* Premium Features */}
-                  <div className="flex flex-wrap gap-2 mb-8">
-                    {property.features.map((feature, idx) => (
-                      <motion.span
-                        key={idx}
-                        className="px-3 py-1 bg-gradient-to-r from-deep-blue/10 to-gold/10 text-deep-blue text-sm font-medium rounded-full border border-deep-blue/20"
-                        initial={{ opacity: 0, scale: 0.8 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ delay: 0.8 + idx * 0.1 }}
-                      >
-                        {feature}
-                      </motion.span>
-                    ))}
-                  </div>
-
-                  {/* Premium CTA Button */}
+                  {/* Mobile-optimized CTA button */}
                   <motion.button
-                    className="w-full btn-primary btn-elegant py-4 text-lg font-medium group relative overflow-hidden"
+                    className="w-full px-4 sm:px-6 py-3 sm:py-4 bg-deep-blue text-white font-semibold rounded-lg transition-all duration-300 hover:bg-soft-black focus:outline-none focus:ring-2 focus:ring-deep-blue min-h-[44px] touch-manipulation"
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    onClick={() => router.push(`/property/${property.id}`)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      router.push(`/property/${property.id}`);
+                    }}
                   >
-                    <span className="relative z-10">View Details</span>
-                    <motion.div
-                      className="absolute inset-0 bg-gradient-to-r from-deep-blue to-gold rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                      initial={false}
-                    />
+                    View Details
                   </motion.button>
                 </div>
-
-                {/* Premium Glow Effect */}
-                <motion.div
-                  className="absolute inset-0 rounded-3xl bg-gradient-to-br from-deep-blue/20 to-gold/20 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"
-                  initial={false}
-                />
               </motion.div>
             ))}
           </motion.div>
 
-          {/* Premium Bottom CTA */}
-          <motion.div
-            initial={{ opacity: 0, y: 60 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 1, delay: 0.8 }}
-            className="text-center mt-24"
-          >
-            <motion.button
-              className="btn-primary btn-elegant px-16 py-6 text-2xl font-medium shadow-2xl group relative overflow-hidden"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.98 }}
-              onClick={() => router.push('/properties')}
-            >
-              <span className="relative z-10">Explore All Properties</span>
-              <motion.div
-                className="absolute inset-0 bg-gradient-to-r from-deep-blue to-gold rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                initial={false}
-              />
-            </motion.button>
-          </motion.div>
-
+          {/* Mobile-optimized lightbox */}
           {lightboxOpen && lightboxImg && (
-            <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center">
-              <div className="max-width-7xl mx-auto">
-                <div className="relative w-full h-full">
-                  <img
-                    src={lightboxImg}
-                    alt="Property Preview"
-                    className="max-w-full max-h-full object-contain"
-                  />
-                </div>
+            <div
+              className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm"
+              onClick={() => setLightboxOpen(false)}
+            >
+              <div className="relative max-w-4xl max-h-[90vh] mx-4">
+                <img
+                  src={lightboxImg}
+                  alt="Property"
+                  className="w-full h-auto max-h-[90vh] object-contain rounded-lg"
+                />
+                <button
+                  onClick={() => setLightboxOpen(false)}
+                  className="absolute top-4 right-4 p-2 bg-black/50 text-white rounded-full hover:bg-black/70 transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
+                >
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
               </div>
             </div>
           )}
-        </div>
-
-        {/* Premium Floating Elements */}
-        <div className="absolute inset-0 bg-blobs pointer-events-none">
-          <div className="bg-blob bg-blob-yellow" />
-          <div className="bg-blob bg-blob-orange" />
-          <div className="bg-blob bg-blob-peach" />
-          <div className="bg-blob bg-blob-blue" />
         </div>
       </section>
     </>

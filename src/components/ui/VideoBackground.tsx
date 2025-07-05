@@ -18,6 +18,7 @@ export default function VideoBackground({
   const [isVideoLoaded, setIsVideoLoaded] = useState(false);
   const [isVideoSupported, setIsVideoSupported] = useState(true);
   const [shouldLoadVideo, setShouldLoadVideo] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   // Check if video is supported and should be loaded
   useEffect(() => {
@@ -25,18 +26,31 @@ export default function VideoBackground({
     const isSupported = !!video.canPlayType;
     setIsVideoSupported(isSupported);
     
+    // Check if device is mobile
+    const checkMobile = () => {
+      const userAgent = navigator.userAgent || navigator.vendor || (window as any).opera;
+      const isMobileDevice = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(userAgent.toLowerCase());
+      setIsMobile(isMobileDevice);
+    };
+    
+    checkMobile();
+    
     // Only load video if supported and connection is good enough
     if (isSupported) {
-      // Check for slow connection
+      // Check for slow connection or mobile device
       if ('connection' in navigator) {
         const connection = (navigator as any).connection;
         if (connection && (connection.effectiveType === 'slow-2g' || connection.effectiveType === '2g')) {
+          setShouldLoadVideo(false);
+        } else if (isMobile && connection && connection.effectiveType === '3g') {
+          // On mobile with 3G, be more conservative
           setShouldLoadVideo(false);
         } else {
           setShouldLoadVideo(true);
         }
       } else {
-        setShouldLoadVideo(true);
+        // If we can't detect connection, be conservative on mobile
+        setShouldLoadVideo(!isMobile);
       }
     }
   }, []);
@@ -48,9 +62,20 @@ export default function VideoBackground({
       // Set up event listeners
       const handleLoadedData = () => setIsVideoLoaded(true);
       const handleError = () => setIsVideoSupported(false);
+      const handleCanPlay = () => {
+        // On mobile, pause video after a few seconds to save battery
+        if (isMobile) {
+          setTimeout(() => {
+            if (video) {
+              video.pause();
+            }
+          }, 5000);
+        }
+      };
       
       video.addEventListener('loadeddata', handleLoadedData);
       video.addEventListener('error', handleError);
+      video.addEventListener('canplay', handleCanPlay);
       
       // Try to play the video
       const playPromise = video.play();
@@ -64,9 +89,10 @@ export default function VideoBackground({
       return () => {
         video.removeEventListener('loadeddata', handleLoadedData);
         video.removeEventListener('error', handleError);
+        video.removeEventListener('canplay', handleCanPlay);
       };
     }
-  }, [isVideoSupported, shouldLoadVideo]);
+  }, [isVideoSupported, shouldLoadVideo, isMobile]);
 
   return (
     <div className={`relative overflow-hidden ${className}`}>
@@ -83,8 +109,14 @@ export default function VideoBackground({
           loop
           muted
           playsInline
-          preload="metadata"
+          preload={isMobile ? "none" : "metadata"}
           aria-hidden="true"
+          style={{
+            objectPosition: 'center',
+            willChange: 'transform',
+            backfaceVisibility: 'hidden',
+            WebkitBackfaceVisibility: 'hidden'
+          }}
         />
       )}
       
@@ -92,7 +124,11 @@ export default function VideoBackground({
       {poster && (!isVideoSupported || !shouldLoadVideo || !isVideoLoaded) && (
         <div 
           className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat" 
-          style={{backgroundImage: `url(${poster})`}}
+          style={{
+            backgroundImage: `url(${poster})`,
+            backgroundPosition: 'center',
+            backgroundSize: 'cover'
+          }}
           aria-hidden="true"
         />
       )}
@@ -112,12 +148,13 @@ export default function VideoBackground({
           transform: translate(-50%, -50%);
         }
         
-        /* Responsive video sizing */
+        /* Mobile optimizations */
         @media (max-width: 768px) {
           video {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            object-position: center;
           }
         }
         
@@ -126,6 +163,8 @@ export default function VideoBackground({
           will-change: transform;
           backface-visibility: hidden;
           -webkit-backface-visibility: hidden;
+          -webkit-transform: translateZ(0);
+          transform: translateZ(0);
         }
         
         /* Reduce motion for users who prefer it */
@@ -135,10 +174,28 @@ export default function VideoBackground({
           }
         }
         
-        /* Optimize for mobile devices */
+        /* Battery optimization for mobile */
         @media (max-width: 768px) {
           video {
             object-position: center;
+            /* Reduce quality on mobile to save battery */
+            filter: brightness(1.05) contrast(1.05);
+          }
+        }
+        
+        /* High DPI display optimizations */
+        @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+          video {
+            image-rendering: -webkit-optimize-contrast;
+            image-rendering: crisp-edges;
+          }
+        }
+        
+        /* Touch device optimizations */
+        @media (hover: none) and (pointer: coarse) {
+          video {
+            /* Optimize for touch devices */
+            touch-action: manipulation;
           }
         }
       `}</style>

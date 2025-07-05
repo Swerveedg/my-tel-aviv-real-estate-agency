@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { properties } from "@/lib/properties";
 import Header from "@/components/ui/Header";
-import { Search, Filter, MapPin, Bed, Bath, Square, DollarSign } from "lucide-react";
+import { Search, Filter, MapPin, Bed, Bath, Square, DollarSign, X } from "lucide-react";
 
 export default function PropertiesPage() {
   const router = useRouter();
@@ -14,6 +14,7 @@ export default function PropertiesPage() {
   const [priceRange, setPriceRange] = useState("all");
   const [bedrooms, setBedrooms] = useState("all");
   const [location, setLocation] = useState("all");
+  const [showFilters, setShowFilters] = useState(false);
 
   // Filter properties based on search and filters
   useEffect(() => {
@@ -76,55 +77,83 @@ export default function PropertiesPage() {
     setLocation("all");
   };
 
+  const hasActiveFilters = searchTerm || propertyType !== "all" || priceRange !== "all" || bedrooms !== "all" || location !== "all";
+
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
       
       {/* Hero Section */}
-      <section className="pt-32 pb-16 px-6 bg-gradient-to-b from-white to-gray-50">
+      <section className="pt-24 sm:pt-32 pb-8 sm:pb-16 px-4 sm:px-6 bg-gradient-to-b from-white to-gray-50">
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="text-center mb-16"
+            className="text-center mb-8 sm:mb-16"
           >
-            <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
+            <h1 className="text-3xl sm:text-5xl md:text-6xl font-bold text-gray-900 mb-4 sm:mb-6">
               Find Your Perfect Home
             </h1>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto px-4">
               Discover exclusive properties in Tel Aviv's most desirable neighborhoods
             </p>
           </motion.div>
 
-          {/* Search and Filter Bar */}
+          {/* Mobile-optimized Search and Filter Bar */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="bg-white rounded-2xl shadow-xl p-6 mb-8"
+            className="bg-white rounded-2xl shadow-xl p-4 sm:p-6 mb-6 sm:mb-8"
           >
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4">
-              {/* Search Input */}
-              <div className="lg:col-span-2">
-                <div className="relative">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-                  <input
-                    type="text"
-                    placeholder="Search properties..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  />
-                </div>
+            {/* Search Input - Full Width on Mobile */}
+            <div className="mb-4 sm:mb-0">
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                <input
+                  type="text"
+                  placeholder="Search properties..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="w-full pl-10 pr-4 py-3 sm:py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-base"
+                />
               </div>
+            </div>
 
+            {/* Filter Toggle for Mobile */}
+            <div className="flex items-center justify-between sm:hidden">
+              <button
+                onClick={() => setShowFilters(!showFilters)}
+                className="flex items-center gap-2 px-4 py-3 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors duration-200 min-h-[44px]"
+              >
+                <Filter className="w-5 h-5" />
+                Filters
+                {hasActiveFilters && (
+                  <span className="bg-blue-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                    !
+                  </span>
+                )}
+              </button>
+              {hasActiveFilters && (
+                <button
+                  onClick={clearFilters}
+                  className="flex items-center gap-2 px-4 py-3 text-gray-600 hover:text-gray-800 transition-colors duration-200 min-h-[44px]"
+                >
+                  <X className="w-5 h-5" />
+                  Clear
+                </button>
+              )}
+            </div>
+
+            {/* Desktop Filters */}
+            <div className="hidden sm:grid sm:grid-cols-2 lg:grid-cols-6 gap-4">
               {/* Property Type Filter */}
               <div>
                 <select
                   value={propertyType}
                   onChange={(e) => setPropertyType(e.target.value)}
-                  className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-base"
                 >
                   <option value="all">All Types</option>
                   <option value="buy">Buy</option>
@@ -137,7 +166,7 @@ export default function PropertiesPage() {
                 <select
                   value={priceRange}
                   onChange={(e) => setPriceRange(e.target.value)}
-                  className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-base"
                 >
                   <option value="all">All Prices</option>
                   <option value="under-500k">Under $500K</option>
@@ -152,7 +181,7 @@ export default function PropertiesPage() {
                 <select
                   value={bedrooms}
                   onChange={(e) => setBedrooms(e.target.value)}
-                  className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-base"
                 >
                   <option value="all">All Beds</option>
                   <option value="1">1 Bed</option>
@@ -162,16 +191,101 @@ export default function PropertiesPage() {
                 </select>
               </div>
 
-              {/* Clear Filters Button */}
+              {/* Location Filter */}
               <div>
+                <select
+                  value={location}
+                  onChange={(e) => setLocation(e.target.value)}
+                  className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-base"
+                >
+                  <option value="all">All Locations</option>
+                  <option value="tel aviv">Tel Aviv</option>
+                  <option value="jaffa">Jaffa</option>
+                  <option value="neve tzedek">Neve Tzedek</option>
+                  <option value="florentin">Florentin</option>
+                </select>
+              </div>
+
+              {/* Clear Filters Button */}
+              <div className="lg:col-span-2">
                 <button
                   onClick={clearFilters}
-                  className="w-full px-4 py-3 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors duration-200"
+                  className="w-full px-4 py-3 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors duration-200 min-h-[44px]"
                 >
-                  Clear
+                  Clear All Filters
                 </button>
               </div>
             </div>
+
+            {/* Mobile Filters Dropdown */}
+            {showFilters && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                exit={{ opacity: 0, height: 0 }}
+                transition={{ duration: 0.3 }}
+                className="sm:hidden mt-4 space-y-4"
+              >
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Type</label>
+                    <select
+                      value={propertyType}
+                      onChange={(e) => setPropertyType(e.target.value)}
+                      className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-base"
+                    >
+                      <option value="all">All Types</option>
+                      <option value="buy">Buy</option>
+                      <option value="rent">Rent</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Price</label>
+                    <select
+                      value={priceRange}
+                      onChange={(e) => setPriceRange(e.target.value)}
+                      className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-base"
+                    >
+                      <option value="all">All Prices</option>
+                      <option value="under-500k">Under $500K</option>
+                      <option value="500k-1m">$500K - $1M</option>
+                      <option value="1m-2m">$1M - $2M</option>
+                      <option value="over-2m">Over $2M</option>
+                    </select>
+                  </div>
+                </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Beds</label>
+                    <select
+                      value={bedrooms}
+                      onChange={(e) => setBedrooms(e.target.value)}
+                      className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-base"
+                    >
+                      <option value="all">All Beds</option>
+                      <option value="1">1 Bed</option>
+                      <option value="2">2 Beds</option>
+                      <option value="3">3 Beds</option>
+                      <option value="4">4+ Beds</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Location</label>
+                    <select
+                      value={location}
+                      onChange={(e) => setLocation(e.target.value)}
+                      className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-base"
+                    >
+                      <option value="all">All Locations</option>
+                      <option value="tel aviv">Tel Aviv</option>
+                      <option value="jaffa">Jaffa</option>
+                      <option value="neve tzedek">Neve Tzedek</option>
+                      <option value="florentin">Florentin</option>
+                    </select>
+                  </div>
+                </div>
+              </motion.div>
+            )}
           </motion.div>
 
           {/* Results Count */}
@@ -179,9 +293,9 @@ export default function PropertiesPage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5, delay: 0.4 }}
-            className="text-center mb-8"
+            className="text-center mb-6 sm:mb-8"
           >
-            <p className="text-gray-600">
+            <p className="text-gray-600 text-sm sm:text-base">
               Showing {filteredProperties.length} of {properties.length} properties
             </p>
           </motion.div>
@@ -189,91 +303,66 @@ export default function PropertiesPage() {
       </section>
 
       {/* Properties Grid */}
-      <section className="px-6 pb-20">
+      <section className="px-4 sm:px-6 pb-12 sm:pb-20">
         <div className="max-w-7xl mx-auto">
           {filteredProperties.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
               {filteredProperties.map((property, index) => (
                 <motion.div
                   key={property.id}
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: index * 0.1 }}
-                  className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden cursor-pointer group"
+                  className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden cursor-pointer touch-manipulation"
                   onClick={() => router.push(`/property/${property.id}`)}
                 >
                   {/* Property Image */}
-                  <div className="relative h-64 overflow-hidden">
+                  <div className="relative h-48 sm:h-64 overflow-hidden">
                     <img
                       src={property.image}
                       alt={property.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
                     />
-                    
-                    {/* Property Type Badge */}
-                    <div className="absolute top-4 left-4">
-                      <span className={`px-3 py-1 rounded-full text-sm font-medium ${
-                        property.type === 'buy' 
-                          ? 'bg-green-100 text-green-800' 
-                          : 'bg-blue-100 text-blue-800'
-                      }`}>
-                        {property.type === 'buy' ? 'For Sale' : 'For Rent'}
-                      </span>
-                    </div>
-
-                    {/* Price Badge */}
-                    <div className="absolute top-4 right-4">
-                      <span className="bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-sm font-bold text-gray-900">
-                        {property.price}
-                      </span>
+                    <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full shadow-lg">
+                      <span className="text-sm font-bold text-gray-900">{property.price}</span>
                     </div>
                   </div>
 
                   {/* Property Details */}
-                  <div className="p-6">
-                    <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors duration-200">
-                      {property.title}
-                    </h3>
+                  <div className="p-4 sm:p-6">
+                    <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2">{property.title}</h3>
+                    <p className="text-gray-600 text-sm sm:text-base mb-4">{property.subtitle}</p>
                     
-                    <p className="text-gray-600 mb-4 flex items-center">
-                      <MapPin className="w-4 h-4 mr-2 text-gray-400" />
-                      {property.location}
-                    </p>
-
-                    <p className="text-gray-500 italic mb-4">
-                      {property.subtitle}
-                    </p>
-
                     {/* Property Stats */}
-                    <div className="flex justify-between text-sm text-gray-600 mb-4">
-                      <span className="flex items-center">
-                        <Bed className="w-4 h-4 mr-1" />
-                        {property.bedrooms} beds
-                      </span>
-                      <span className="flex items-center">
-                        <Bath className="w-4 h-4 mr-1" />
-                        {property.bathrooms} baths
-                      </span>
-                      <span className="flex items-center">
-                        <Square className="w-4 h-4 mr-1" />
-                        {property.area}
-                      </span>
+                    <div className="flex items-center justify-between text-sm text-gray-500 mb-4">
+                      <div className="flex items-center gap-1">
+                        <Bed className="w-4 h-4" />
+                        <span>{property.bedrooms} beds</span>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <Bath className="w-4 h-4" />
+                        <span>{property.bathrooms} baths</span>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <Square className="w-4 h-4" />
+                        <span>{property.size}</span>
+                      </div>
                     </div>
 
-                    {/* Features */}
-                    <div className="flex flex-wrap gap-2 mb-4">
-                      {property.features.slice(0, 3).map((feature, idx) => (
-                        <span
-                          key={idx}
-                          className="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded-full"
-                        >
-                          {feature}
-                        </span>
-                      ))}
+                    {/* Location */}
+                    <div className="flex items-center gap-2 text-sm text-gray-600 mb-4">
+                      <MapPin className="w-4 h-4" />
+                      <span>{property.location}</span>
                     </div>
 
                     {/* View Details Button */}
-                    <button className="w-full bg-gray-900 text-white py-3 rounded-lg hover:bg-gray-800 transition-colors duration-200 font-medium">
+                    <button
+                      className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg font-semibold hover:bg-blue-700 transition-colors duration-200 min-h-[44px] touch-manipulation"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        router.push(`/property/${property.id}`);
+                      }}
+                    >
                       View Details
                     </button>
                   </div>
@@ -284,22 +373,14 @@ export default function PropertiesPage() {
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="text-center py-20"
+              className="text-center py-12"
             >
-              <div className="text-gray-400 mb-4">
-                <Search className="w-16 h-16 mx-auto" />
-              </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                No properties found
-              </h3>
-              <p className="text-gray-600 mb-6">
-                Try adjusting your search criteria or filters
-              </p>
+              <div className="text-gray-500 text-lg mb-4">No properties found</div>
               <button
                 onClick={clearFilters}
-                className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200"
+                className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors duration-200 min-h-[44px]"
               >
-                Clear All Filters
+                Clear Filters
               </button>
             </motion.div>
           )}
