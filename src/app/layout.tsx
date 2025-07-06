@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
-import { Inter, Playfair_Display, Manrope } from "next/font/google";
+import { Inter, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/ui/Header";
+import { ThemeProvider } from "@/components/providers/theme-provider";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -10,11 +11,6 @@ const inter = Inter({
 
 const playfairDisplay = Playfair_Display({
   variable: "--font-playfair",
-  subsets: ["latin"],
-});
-
-const manrope = Manrope({
-  variable: "--font-manrope",
   subsets: ["latin"],
 });
 
@@ -229,11 +225,18 @@ export default function RootLayout({
         <link rel="preload" href="/fonts/playfair-display-var.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
       </head>
       <body
-        className={`${inter.variable} ${playfairDisplay.variable} ${manrope.variable} antialiased`}
+        className={`${inter.variable} ${playfairDisplay.variable} antialiased`}
         style={{ touchAction: 'manipulation' }}
       >
-        <Header />
-        {children}
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="dark"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <Header />
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );

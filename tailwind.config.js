@@ -16,6 +16,7 @@ module.exports = {
         '18': '4.5rem',
         '88': '22rem',
         '128': '32rem',
+        '13': '3.25rem',
       },
       animation: {
         'float': 'float 6s ease-in-out infinite',
@@ -71,6 +72,8 @@ module.exports = {
         'warm-gray': '#6b7280',
         'soft-black': '#1f2937',
         'off-white': '#f8f7f4',
+        'luxury-dark': '#0c0f13',
+        'luxury-gray': '#373d40',
       },
       borderRadius: {
         '4xl': '2rem',

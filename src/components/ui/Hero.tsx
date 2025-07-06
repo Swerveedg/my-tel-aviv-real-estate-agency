@@ -42,7 +42,7 @@ export default function Hero() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.2, ease: [0.17, 0.67, 0.5, 1.35] }}
-            className="text-[clamp(1rem,3vw,1.4rem)] font-light text-gray-100 leading-relaxed"
+            className="mx-auto max-w-[55ch] lg:max-w-[65ch] leading-relaxed md:leading-loose text-[clamp(1rem,3vw,1.4rem)] font-light text-gray-100"
           >
             Exclusive residences overlooking the Mediterranean, designed for those who live without compromise.
           </motion.p>
