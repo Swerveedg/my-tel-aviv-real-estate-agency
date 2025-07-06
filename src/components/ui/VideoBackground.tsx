@@ -120,46 +120,18 @@ export default function VideoBackground({
         />
       )}
       
-      {/* Fallback for browsers that don't support video or when video fails to load */}
-      {poster && (!isVideoSupported || !shouldLoadVideo || !isVideoLoaded) && (
-        <div 
-          className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat" 
-          style={{
-            backgroundImage: `url(${poster})`,
-            backgroundPosition: 'center',
-            backgroundSize: 'cover'
-          }}
-          aria-hidden="true"
-        />
-      )}
-      
       {/* Content */}
       {children}
       
       <style jsx>{`
-        /* Ensure video covers the entire container */
         video {
-          min-width: 100%;
-          min-height: 100%;
-          width: auto;
-          height: auto;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
-        }
-        
-        /* Mobile optimizations */
-        @media (max-width: 768px) {
-          video {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            object-position: center;
-          }
-        }
-        
-        /* Performance optimizations */
-        video {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          object-position: center;
+          position: absolute;
+          top: 0;
+          left: 0;
           will-change: transform;
           backface-visibility: hidden;
           -webkit-backface-visibility: hidden;
@@ -167,19 +139,17 @@ export default function VideoBackground({
           transform: translateZ(0);
         }
         
-        /* Reduce motion for users who prefer it */
-        @media (prefers-reduced-motion: reduce) {
+        /* Mobile optimizations */
+        @media (max-width: 768px) {
           video {
-            animation: none;
+            filter: brightness(1.05) contrast(1.05);
           }
         }
         
-        /* Battery optimization for mobile */
-        @media (max-width: 768px) {
+        /* Performance optimizations */
+        @media (prefers-reduced-motion: reduce) {
           video {
-            object-position: center;
-            /* Reduce quality on mobile to save battery */
-            filter: brightness(1.05) contrast(1.05);
+            animation: none;
           }
         }
         
@@ -194,7 +164,6 @@ export default function VideoBackground({
         /* Touch device optimizations */
         @media (hover: none) and (pointer: coarse) {
           video {
-            /* Optimize for touch devices */
             touch-action: manipulation;
           }
         }
